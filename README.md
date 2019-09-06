@@ -67,4 +67,55 @@ class Solution(object):
         return low
 ```
 
+#### (424). Longest Repeating Character Replacement
+
+Given a string s that consists of only uppercase English letters, you can perform at most k operations on that string.
+
+In one operation, you can choose any character of the string and change it to any other uppercase English character.
+
+Find the length of the longest sub-string containing all repeating letters you can get after performing the above operations.
+
+Note:
+Both the string's length and k will not exceed 104.
+
+Example 1:
+
+Input:
+s = "ABAB", k = 2
+
+Output:
+4
+
+Explanation:
+Replace the two 'A's with two 'B's or vice versa.
+
+>Re: [Sliding window](similar to finding longest substring with k distinct characters)
+
+>Similar idea in Python but allowing any character, not just uppercase English letters [Updated based on comments below]:
+```python
+def characterReplacement(self, s, k):
+    res = lo = hi = 0
+    counts = collections.Counter()
+    for hi in range(1, len(s)+1):
+        counts[s[hi-1]] += 1
+        max_char_n = counts.most_common(1)[0][1]
+        if hi - lo - max_char_n > k:
+            counts[s[lo]] -= 1
+            lo += 1
+    return hi - lo
+```
+[Original code in order to understand comment from @StefanPochmann was:]
+```python
+def characterReplacement(self, s, k):
+    res = lo = 0
+    counts = collections.Counter()
+    for hi in range(len(s)):
+        counts[s[hi]] += 1
+        max_char_n = counts.most_common(1)[0][1]
+        while (hi - lo - max_char_n + 1 > k):
+            counts[s[lo]] -= 1
+            lo += 1
+        res = max(res, hi - lo + 1)
+    return res
+```
 ## Qs to review
