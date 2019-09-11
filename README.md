@@ -185,3 +185,43 @@ class Solution:
         self.connect_by_rowcol(cols)
         return len(stones)-self.counts
 ```
+
+### 2. DFS/backtracking
+
+#### (131). Palindrome Partitioning
+
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return all possible palindrome partitioning of s.
+
+Example:
+
+Input: "aab"
+Output:
+[
+  ["aa","b"],
+  ["a","a","b"]
+]
+```python
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        out = []
+        def isPalindrome(st):
+            return st == st[::-1]
+        
+        def dfs(curr=[], index=1):
+            if index == len(s) + 1:
+                out.append(list(curr))
+                return
+            for i in range(index, len(s)+1):
+                if isPalindrome(s[index-1:i]):
+                    curr.append(s[index-1:i])
+                    dfs(curr, i+1)
+                    curr.pop()
+        dfs()
+        return out
+```
