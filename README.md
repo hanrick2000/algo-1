@@ -2,6 +2,8 @@
 
 ## Qs in question
 
+> #### 399. Evaluate Division
+
 ### Two pointers/sliding window
 
 #### 1. (560). Subarray Sum Equals K
@@ -122,6 +124,26 @@ def characterReplacement(self, s, k):
 
 ### 1. Union Find
 
+#### 547. Friend Circles
+
+i,j is friend given in matrix, loop half of matrix to build UF, keep track of # of groups at connect
+return groups
+
+#### 737. Sentence Similarity II
+
+list of word pairs --> build UF.
+for 2 word list in question, find parent for each and then compare.
+
+#### 1101.The Earliest Moment When Everyone Become Friends
+
+pair of friends + time
+ UF, record # of groups and time. update when connect.
+
+#### 1061. Lexicographically Smallest Equivalent String
+
+build UF with A and B, at union, let the smaller char be parent.
+for string S, loop and find.
+
 #### (947). Most Stones Removed with Same Row or Column
 
 On a 2D plane, we place stones at some integer coordinate points.  Each coordinate point may have at most one stone.
@@ -185,8 +207,11 @@ class Solution:
         self.connect_by_rowcol(cols)
         return len(stones)-self.counts
 ```
+### 2. Trie
 
-### 2. DFS/backtracking
+#### 	Longest Word in Dictionary
+
+### 3. DFS/backtracking
 
 #### (131). Palindrome Partitioning
 
