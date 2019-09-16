@@ -63,3 +63,54 @@ remove from heap?
 see if possible to wait and pop
 
 ### 3. Collections
+
+
+### 4. Variable Scope
+
+In python all the variables inside a function are __global__ if they are not assigned any value to them. That means if a variable is __only referenced inside a function, it is global__. However if we __assign any value__ to a variable inside a function, its scope becomes local to that __unless explicitly declared global__.
+
+Explicitly declare scope with `global` or `nonlocal`. Nonlocal binds the variable to nearest enclosing scope except global.
+
+``` python
+class Solution:
+    def intervalIntersection(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+        events = [] #break down events of interval start and end
+        def recode_intervals(A: List[List[int]]) -> None:
+            for start,end in A:
+                events.append((start, 1))
+                events.append((end  , -1))
+        
+        recode_intervals(A)
+        recode_intervals(B)
+        events.sort(key = lambda x: (x[0],-x[1])) # sort ascending start time, adding first
+        old_counter = 0
+        ans = []
+        oneinterval = []
+        def add_interval():
+            nonlocal oneinterval
+            if old_counter == 1 and counter == 2:
+                # start of intersection
+                oneinterval.append(num)
+            elif old_counter == 2 and counter == 1:
+                # end of intersection
+                oneinterval.append(num)
+                ans.append(oneinterval)
+                oneinterval = []
+            
+        for num,sign in events:
+            counter = old_counter
+            if sign == 1:
+                counter += 1
+                add_interval()
+            elif sign == -1:
+                counter -= 1
+                add_interval()
+            old_counter = counter
+        return ans
+```
+
+So take away is:
+
+1. Use global keyword with a variable if only you are assigning value to that variable inside a function and you want to overwrite the value of variable declared in global scope.
+
+2. Use nonlocal keyword in nested scopes.
