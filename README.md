@@ -315,3 +315,12 @@ class Solution:
                 
         return len(minheap)
 ```
+
+延伸： 986. Interval List Intersections
+
+Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
+
+Return the intersection of these two interval lists.
+
+延续扫描线思路， 先拆分区间，排列（依题意按start time升序，开始优先于结束 -- closed intervals）
+loop over and count， 每当count 1->2, add intersect start; count 2->1, and intersect end.
