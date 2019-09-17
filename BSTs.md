@@ -54,4 +54,68 @@ preorder traversal of BST:
    root.right = None
    
 ```
+#### 530. Minimum Absolute Difference in BST [easy]
 
+Given a binary search tree with non-negative values, find the minimum absolute difference between values of any two nodes.
+
+特性：inorder traversal of BST is sorted. compare pairwise then.
+
+__self.prev = root.val__: get smallest from right tree.__why?__
+```python
+class Solution:
+    def getMinimumDifference(self, root: TreeNode) -> int:
+        self.mindiff = sys.maxsize
+        self.prev =  sys.maxsize
+        def inorder_traversal(root: TreeNode) -> None:
+            if not root:
+                return 
+            inorder_traversal(root.left)
+            print(self.prev,root.val)
+            self.mindiff = min(self.mindiff, abs(root.val - self.prev))
+            self.prev = root.val
+            inorder_traversal(root.right)
+            
+        inorder_traversal(root)
+        return self.mindiff
+```
+类似题型：
+
+__230. Kth Smallest Element in a BST__
+
+利用BST inorder is sorted, inorder traversal and record counter to k. 
+
+注意counter的位置。最小值的left是空的，从root记。
+```
+    self.inorder_helper(root.left,k)
+    self.i += 1
+    if self.i == k:
+        self.ans = root.val
+    self.inorder_helper(root.right,k)
+```
+
+
+
+#### 701. Insert into a Binary Search Tree
+
+Given the root node of a binary search tree (BST) and a value to be inserted into the tree, insert the value into the BST. Return the root node of the BST after the insertion. It is guaranteed that the new value does not exist in the original BST.
+
+Note that there may exist multiple valid ways for the insertion, as long as the tree remains a BST after insertion. You can return any of them.
+
+只需要插入， DFS找到位置插入。
+```python
+class Solution:
+    def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
+        def dfs_helper(root: TreeNode,val: int) -> None:
+            if val > root.val:
+                if not root.right:
+                    root.right = TreeNode(val)
+                else:
+                    self.insertIntoBST(root.right,val)
+            elif val < root.val:
+                if not root.left:
+                    root.left = TreeNode(val)
+                else:
+                    self.insertIntoBST(root.left,val)
+        dfs_helper(root,val)
+        return root
+```
