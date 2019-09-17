@@ -38,3 +38,20 @@ class Solution:
             self.isValidBST(root.right, root.val, higher_thread)
         return left and right
 ```
+
+#### 1008. Construct Binary Search Tree from Preorder Traversal
+
+Return the root node of a binary search tree that matches the given preorder traversal.
+```
+preorder traversal of BST: 
+ first item: root
+ find first idx in list > root.val
+   idx found:
+   root.left  = reconstruct(list[1:idx])
+   root.right = reconstruct(list[idx:])
+   idx not found -- no right tree:
+   root.left = reconstruct(list[1:])
+   root.right = None
+   
+```
+
