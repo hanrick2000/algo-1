@@ -54,6 +54,15 @@ preorder traversal of BST:
    root.right = None
    
 ```
+延伸题型：
+
+__108. Convert Sorted Array to Binary Search Tree （same as construct BST from inorder traversal)__
+
+Get mid = len(array)//2. root = Treenode(mid), root.left = construct(array[:mid]), root.right = construct(array[mid+1:])
+
+
+
+
 #### 530. Minimum Absolute Difference in BST [easy]
 
 Given a binary search tree with non-negative values, find the minimum absolute difference between values of any two nodes.
@@ -117,5 +126,40 @@ class Solution:
                 else:
                     self.insertIntoBST(root.left,val)
         dfs_helper(root,val)
+        return root
+```
+
+
+#### 450. Delete Node in a BST :star:
+
+Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.
+
+Basically, the deletion can be divided into two stages:
+
+Search for a node to remove.
+If the node is found, delete the node.
+Note: Time complexity should be O(height of tree).
+
+```python
+class Solution:
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if not root:
+            return root
+        if key > root.val:
+            root.right = self.deleteNode(root.right,key)
+        elif key < root.val:
+            root.left  = self.deleteNode(root.left ,key)
+        else:
+            # key == root.val
+            if not root.right:
+                return root.left
+            else:
+                # find smallest from right subtree to put on root
+                temp = root.right
+                while temp.left:
+                    temp = temp.left
+                    
+                root.val = temp.val
+                root.right = self.deleteNode(root.right,temp.val)
         return root
 ```
