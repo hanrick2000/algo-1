@@ -122,91 +122,40 @@ def characterReplacement(self, s, k):
 ```
 ## Qs to review
 
-### 1. Union Find
+#### 662. Maximum Width of Binary Tree
 
-#### 547. Friend Circles
+Given a binary tree, write a function to get the maximum width of the given tree. The width of a tree is the maximum width among all levels. The binary tree has the same structure as a full binary tree, but some nodes are null.
 
-i,j is friend given in matrix, loop half of matrix to build UF, keep track of # of groups at connect
-return groups
+The width of one level is defined as the length between the end-nodes (the leftmost and right most non-null nodes in the level, where the null nodes between the end-nodes are also counted into the length calculation.
 
-#### 737. Sentence Similarity II
-
-list of word pairs --> build UF.
-for 2 word list in question, find parent for each and then compare.
-
-#### 1101.The Earliest Moment When Everyone Become Friends
-
-pair of friends + time
- UF, record # of groups and time. update when connect.
-
-#### 1061. Lexicographically Smallest Equivalent String
-
-build UF with A and B, at union, let the smaller char be parent.
-for string S, loop and find.
-
-#### (947). Most Stones Removed with Same Row or Column
-
-On a 2D plane, we place stones at some integer coordinate points.  Each coordinate point may have at most one stone.
-
-Now, a move consists of removing a stone that shares a column or row with another stone on the grid.
-
-What is the largest possible number of moves we can make?
-
- 
-
-Example 1:
-
-Input: stones = [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]
-Output: 5
-Example 2:
-
-Input: stones = [[0,0],[0,2],[1,1],[2,0],[2,2]]
-Output: 3
-
-> Define connected as stone with same row/col. Q is asking for (# stones - # connected islands)
+解题关键在满秩树，x的left：2x+1， right： 2x+2。
+BFS，在队列中每个node加flag：idx -- 在满秩树中位置
+则for each level, width = right - left +1,
+keep (max width) updated as BFS
 
 ```python
 class Solution:
-    def __init__(self):
-        self.fathers = {}
-        self.counts  = None
-    def find(self,x):
-        path = []
-        while x != self.fathers[x]:
-            path.append(x)
-            x = self.fathers[x]
-        for node in path:
-            self.fathers[node] = x
-        return x
-            
-    def union(self,x,y):
-        rootx = self.find(x)
-        rooty = self.find(y)
-        if rootx != rooty:
-            self.fathers[rootx] = rooty
-            self.counts -= 1
-            
-    def connect_by_rowcol(self,connect_dict):
-        for i, connects in connect_dict.items():
-            if len(connects)<2:
-                continue
-            for node in connects[1:]:
-                self.union(node,connects[0])
-            
-    def removeStones(self, stones: List[List[int]]) -> int:
-        if not stones:
+    def widthOfBinaryTree(self, root: TreeNode) -> int:
+        if not root:
             return 0
-        self.fathers = {(i,j): (i,j) for i,j in stones}
-        self.counts = len(stones)
-        cols = collections.defaultdict(list)
-        rows = collections.defaultdict(list)
-        for x,y in stones:
-            rows[x].append((x,y))
-            cols[y].append((x,y))
-        self.connect_by_rowcol(rows)
-        self.connect_by_rowcol(cols)
-        return len(stones)-self.counts
+        q = collections.deque([(root,0)])
+        max_width = 1
+        while q:
+            # lv
+            left_pos = 0
+            for i in range(len(q)):
+                node,idx = q.popleft()
+                if node.left:
+                    q.append((node.left ,idx * 2 + 1))
+                if node.right:
+                    q.append((node.right,idx * 2 + 2))
+                if i == 0:
+                    left_pos = idx
+            max_width = max(max_width,idx-left_pos+1)
+        
+        return max_width
 ```
+
 ### 2. Trie
 
 #### 	Longest Word in Dictionary
@@ -253,74 +202,3 @@ class Solution(object):
 
 ### X. Others
 
-#### 253. Meeting Rooms II
-Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
-
-Example 1:
-
-Input: [[0, 30],[5, 10],[15, 20]]
-Output: 2
-
-思路 1: 扫描线
-```
-拆分区间为 [(start,1),(end,-1),..]
-sort
-loop through and record count max
-```
-```python
-class Solution:
-    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        events = []
-        for start,end in intervals:
-            events.append((start, 1))
-            events.append((end  ,-1))
-        events.sort()
-        # print(events)
-        
-        c = maxc = 0
-        for event,sign in events:
-            if sign == 1:
-                c += 1
-            elif sign == -1:
-                c -= 1
-            maxc = max(maxc,c)
-            
-        return maxc
-```
-
-思路 2: heap
-```
-sort: 按照开始时间排序
-min heap: maintain end time of each occupied meeting room:
-loop over sorted list of intervals:
-    if start time later than heap top: update;
-    else: add end time to heap
-return len(heap)
-```
-
-```python 
-class Solution:
-    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        intervals.sort(key = lambda x: x[0]) # sort by start time
-        # maintain minheap for end time of each occupied room
-        minheap = []
-        for start,end in intervals:
-            if minheap and minheap[0]<= start:
-                # if exists meeting room that ends before this one starts, 
-                # has to be min val in heap, update end time
-                heapq.heapreplace(minheap,end)
-            else:
-                #otherwise add new room
-                heapq.heappush(minheap,end)
-                
-        return len(minheap)
-```
-
-延伸： 986. Interval List Intersections
-
-Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
-
-Return the intersection of these two interval lists.
-
-延续扫描线思路， 先拆分区间，排列（依题意按start time升序，开始优先于结束 -- closed intervals）
-loop over and count， 每当count 1->2, add intersect start; count 2->1, and intersect end.
