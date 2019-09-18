@@ -163,3 +163,94 @@ class Solution:
                 root.right = self.deleteNode(root.right,temp.val)
         return root
 ```
+
+#### 173. Binary Search Tree Iterator
+
+Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+
+Calling next() will return the next smallest number in the BST.
+
+BST特点，沿着左子树一直向左是最小值，将经过的节点加到stack里。
+另，因为all of 左子树<root， 每pop一个node，此node右子树中最小值将是全树最小。且此node右子树中的所以节点均 < stack top
+故，在next()总将这个右子树的所以左节点依次加入stack
+```python
+class BSTIterator:
+    def __init__(self, root: TreeNode):
+        self.stack = []
+        while root:
+            self.stack.append(root)
+            root = root.left
+
+    def next(self) -> int:
+        #return the next smallest number
+        node = self.stack.pop()
+        s = node.val
+        # add candidates for next from right tree
+        node = node.right
+        while node:
+            self.stack.append(node)
+            node = node.left
+        return s
+
+    def hasNext(self) -> bool:
+        #return whether we have a next smallest number
+        return len(self.stack)>0
+```
+
+
+应用题型
+
+#### 729. My Calendar I
+
+Implement a MyCalendar class to store your events. A new event can be added if adding the event will not cause a double booking.
+
+Your class will have the method, book(int start, int end). Formally, this represents a booking on the half open interval [start, end), the range of real numbers x such that start <= x < end.
+
+因有重复插入的需求，关键在提高查找插入的效率，用二叉树存储(start,end) that's already booked. 因无double book, s/e无重叠.
+no rebalancing, thus at worst case, O(N)
+```python
+class TreeNode:
+    def __init__(self,start,end):
+        self.s = start
+        self.e = end
+        self.left = None
+        self.right = None
+class MyCalendar:
+
+    def __init__(self):
+        self.root = None
+    def book_dfs(self,start: int, end: int, root: TreeNode):
+        if end <= root.s:
+            if not root.left:
+                root.left = TreeNode(start,end)
+                return True
+            return self.book_dfs(start,end,root.left)
+        elif start >= root.e:
+            if not root.right:
+                root.right = TreeNode(start,end)
+                return True
+            return self.book_dfs(start,end,root.right)
+        else:
+            return False
+        
+    def book(self, start: int, end: int) -> bool:
+        if not self.root:
+            self.root = TreeNode(start,end)
+            return True
+        return self.book_dfs(start,end,self.root)
+```
+另，用 bisect library:
+```python
+class MyCalendar:
+    def __init__(self):
+        self.ints = []        
+    def book(self, st: 'int', end: 'int') -> 'bool':
+        idx = bisect_left(self.ints, (st, end))
+        is_left_valid = idx == 0 or self.ints[idx-1][1] <= st
+        is_right_valid = idx == len(self.ints) or end <= self.ints[idx][0]
+        
+        if is_left_valid and is_right_valid:
+            self.ints.insert(idx, (st, end))
+            return True
+        return False
+```
