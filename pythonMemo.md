@@ -1,5 +1,22 @@
 ## Memo
 
+### 0. Built-ins
+
+#### 0.1 zip(*iterables)
+
+Returns an iterator of tuples, where the i-th tuple contains the i-th element from each of the argument sequences or iterables. The iterator __stops when the shortest input iterable is exhausted__. With a single iterable argument, it returns an iterator of 1-tuples. With no arguments, it returns an empty iterator. 
+
+zip() in conjunction with the * operator can be used to unzip a list:
+```
+>>> x = [1, 2, 3]
+>>> y = [4, 5, 6]
+>>> zipped = zip(x, y)
+>>> list(zipped)
+[(1, 4), (2, 5), (3, 6)]
+>>> x2, y2 = zip(*zip(x, y))
+>>> x == list(x2) and y == list(y2)
+True
+```
 ### 1. Sort
 
 __sorted(a) vs. a.sort()__
