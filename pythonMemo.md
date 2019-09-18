@@ -81,6 +81,23 @@ see if possible to wait and pop
 
 ### 3. Collections
 
+#### 3.1 Counter
+
+class collections.Counter([iterable-or-mapping])
+
+A Counter is a dict subclass for counting hashable objects. It is a collection where elements are stored as dictionary keys and their counts are stored as dictionary values. Counts are allowed to be any integer value including zero or negative counts.
+>The Counter class itself is a dictionary subclass with no restrictions on its keys and values. The values are intended to be numbers representing counts, but you could store anything in the value field.The most_common() method requires only that the values be orderable.
+
+Counter objects support three methods beyond those available for all dictionaries:
+
+`elements()`: Return an iterator over elements repeating each as many times as its count. Elements are returned in __arbitrary order__. If an element’s count is less than one, elements() will ignore it. requires integer counts.
+
+`most_common([n])`: Return a list of the n most common elements and their counts from the most common to the least. If n is omitted or None, most_common() returns all elements in the counter. Elements with __equal counts are ordered arbitrarily__.
+
+`subtract([iterable-or-mapping])`: Elements are subtracted from an iterable or from another mapping (or counter). Like dict.update() but subtracts counts instead of replacing them. Both inputs and outputs may be zero or negative.
+
+The usual dictionary methods are available for Counter objects except for: fromkeys (_not implemented_), update([iterable-or-mapping])
+(_Elements are counted from an iterable or added-in from another mapping (or counter). Like dict.update() but adds counts instead of replacing them. Also, the iterable is expected to be a sequence of elements, not a sequence of (key, value) pairs._)
 
 ### 4. Variable Scope
 
