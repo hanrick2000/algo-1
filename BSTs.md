@@ -198,7 +198,7 @@ class BSTIterator:
 ```
 
 
-应用题型
+### 应用题型
 
 #### 729. My Calendar I
 
@@ -253,4 +253,37 @@ class MyCalendar:
             self.ints.insert(idx, (st, end))
             return True
         return False
+```
+
+#### 另
+#### 855. Exam Room
+
+In an exam room, there are N seats in a single row, numbered 0, 1, 2, ..., N-1.
+
+When a student enters the room, they must sit in the seat that maximizes the distance to the closest person.  If there are multiple such seats, they sit in the seat with the lowest number.  (Also, if no one is in the room, then the student sits at seat number 0.)
+使用bisect插入
+简单直白loop相邻两座位，更新距离。
+```python
+# Your ExamRoom object will be instantiated and called as such:
+# obj = ExamRoom(N)
+# param_1 = obj.seat()
+# obj.leave(p)
+class ExamRoom:
+    def __init__(self, N: int):
+        self.N, self.occupied_seats = N, []
+
+    def seat(self) -> int:
+        if not self.occupied_seats:
+            self.occupied_seats.append(0)
+            return 0
+        curr_d, idx = 0,0
+        for s1,s2 in zip(self.occupied_seats,self.occupied_seats[1:]):
+            if (s2 - s1)//2>curr_d:
+                curr_d, idx = (s2-s1)//2,(s1+s2)//2
+        if self.N - 1 - self.occupied_seats[-1] > curr_d: idx = self.N-1
+        bisect.insort(self.occupied_seats,idx)
+        return idx
+
+    def leave(self, p: int) -> None:
+        self.occupied_seats.remove(p)
 ```
