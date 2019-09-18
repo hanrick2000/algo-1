@@ -261,8 +261,15 @@ class MyCalendar:
 In an exam room, there are N seats in a single row, numbered 0, 1, 2, ..., N-1.
 
 When a student enters the room, they must sit in the seat that maximizes the distance to the closest person.  If there are multiple such seats, they sit in the seat with the lowest number.  (Also, if no one is in the room, then the student sits at seat number 0.)
-使用bisect插入
+
+使用bisect插入 `bisect.insort(self.occupied_seats,idx)`
 简单直白loop相邻两座位，更新距离。
+
+注意用法： 
+
+- `for i,j in zip(list1,list2)`
+- loop 前 `curr_d = self.occupied_seats[0]` -- if idx==0 not occupied, initialize dist = dist from 0 to first seated.
+
 ```python
 # Your ExamRoom object will be instantiated and called as such:
 # obj = ExamRoom(N)
@@ -276,7 +283,7 @@ class ExamRoom:
         if not self.occupied_seats:
             self.occupied_seats.append(0)
             return 0
-        curr_d, idx = 0,0
+        curr_d, idx = self.occupied_seats[0],0
         for s1,s2 in zip(self.occupied_seats,self.occupied_seats[1:]):
             if (s2 - s1)//2>curr_d:
                 curr_d, idx = (s2-s1)//2,(s1+s2)//2
