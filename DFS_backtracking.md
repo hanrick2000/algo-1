@@ -51,6 +51,15 @@ class Solution:
         dfs_helper(sorted(candidates),target,[])
         return self.res
 ```
+#### 216. Combination Sum III
+
+Add len of ans requirement. Pass to dfs.注意终止条件。
+#### 377. Combination Sum IV (Permutation sum)
+
+Note that different sequences are counted as different combinations.
+
+`dfs_helper(candidates,nt,pre+[candidates[i]])` include full list instead of partial list. However, DFS solution only works on small targets. Too slow for deeper stacks. Use DP.
+
 
 #### (131). Palindrome Partitioning
 
