@@ -59,3 +59,39 @@ class Solution:
                     f[i][j] += f[i][j-1]
         return f[-1][-1]
 ```
+
+#### 91. Decode Ways
+
+A message containing letters from A-Z is being encoded to numbers using the following mapping:
+
+'A' -> 1, 'B' -> 2, ..., 'Z' -> 26
+
+Given a non-empty string containing only digits, determine the total number of ways to decode it.
+```python
+class Solution:
+    def isValid(self,s:str) -> bool:
+        if len(s) == 1 and s != '0':
+            return True
+        if len(s) == 2 and '10' <= s <= '26':
+            return True
+        return False
+        
+    def numDecodings(self, s: str) -> int:
+        # f[i] = f[i-1]|s[i-1] is valid char + f[i-2]|s[i-2] is valid char
+        # initial states: f[0] = 1
+        # limits: i == 1: no f[i-2]
+        # order of states: f[0] ...f[n]
+        if not s:
+            return 1
+        f = [0 for _ in range(len(s)+1)]
+        f[0] = 1
+        if self.isValid(s[0]):
+            f[1] = f[0]
+        for i in range(2,len(s)+1):
+            if self.isValid(s[i-1]):
+                f[i] += f[i-1] 
+            if self.isValid(s[i-2:i]):
+                f[i] += f[i-2] 
+        return f[-1]
+        
+```
