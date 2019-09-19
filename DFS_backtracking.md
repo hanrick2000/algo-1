@@ -60,7 +60,48 @@ Note that different sequences are counted as different combinations.
 
 `dfs_helper(candidates,nt,pre+[candidates[i]])` include full list instead of partial list. However, DFS solution only works on small targets. Too slow for deeper stacks. Use DP.
 
+#### 77. Combinations
 
+Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+```python
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        self.res = []
+        def dfs_helper(n,i,t,pre):
+            if t == 0:
+                self.res.append(pre)
+            for j in range(i,n+1):
+                dfs_helper(n,j+1,t-1,pre+[j])
+        dfs_helper(n,1,k,[])
+        return self.res
+```
+
+#### 47. Permutations II
+
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+>permutation, different than combinations, next search cannot eliminate idx already used.
+>do next dfs on `nums[:i]+nums[i+1:]`: all numbers except current.
+
+>Also, since possible of duplicated numbers, only search for the first one. bypass all others.
+
+```python
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        self.res = []
+        def dfs_helper(nums,target,pre):
+            if target == 0:
+                self.res.append(pre)
+            elif target < 0:
+                return []
+            else:
+                for i in range(len(nums)):
+                    if i>0 and nums[i]==nums[i-1]:
+                        continue
+                    dfs_helper(nums[:i]+nums[i+1:],target-1,pre+[nums[i]])
+        dfs_helper(sorted(nums),len(nums),[])
+        return self.res
+```
 #### (131). Palindrome Partitioning
 
 Given a string s, partition s such that every substring of the partition is a palindrome.
