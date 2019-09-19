@@ -95,3 +95,27 @@ class Solution:
         return f[-1]
         
 ```
+
+#### 322. Coin Change
+
+You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        # state: f[i] # of coins to make up to amount i
+        # initial states, for each coin: f[coin] = 1; f[0] = 0
+        ## transitional: f[i] = min(f[i-coin]+1)
+        # boundaries: i>coin; if coin>amount, no use of add to state.
+        f = [sys.maxsize for _ in range(amount+1)]
+        f[0] = 0
+        for coin in coins:
+            if coin <= amount:
+                f[coin] = 1
+        for i in range(1,amount+1):
+            for coin in coins:
+                if i > coin:
+                    f[i] = min(f[i],f[i-coin]+1)
+        if f[-1] == sys.maxsize:
+            return -1
+        return f[-1]
+```
