@@ -119,3 +119,42 @@ class Solution:
             return -1
         return f[-1]
 ```
+
+#### 983. Minimum Cost For Tickets
+
+In a country popular for train travel, you have planned some train travelling one year in advance.  The days of the year that you will travel is given as an array days.  Each day is an integer from 1 to 365. Train tickets are sold in 3 different ways:
+
+costs[1day pass,7 days pass, 30 days pass]
+
+Return the minimum number of dollars you need to travel every day in the given list of days.
+
+Input: days = [1,4,6,7,8,20], costs = [2,7,15]
+
+难点在state计算
+
+```python
+class Solution:
+    def mincostTickets(self, days: List[int], costs: List[int]) -> int:
+        # state: f[i] least cost to travel upto i days.i is idx in days.
+        # transitional: f[i] = min(f[day_to_idx(days[i]-passday)]+cost[passday])
+        # initial: f[0] = 0
+        # boundary: days[i]<passday -> cost[passday]
+        
+        day_to_idx = {v:i for i,v in enumerate(days)}   # lookup dict for days value to index
+        passday_dict = {0:1,1:7,2:30}                   # effective days per pass id
+        # state 0, index of days
+        f = [sys.maxsize for _ in range(len(days)+1)]
+        f[0] = 0                                        # initial state 0: no travel, cost 0
+        for i in range(1,len(days)+1):
+            for passdays,passcost in enumerate(costs):
+                pre = days[i-1]-passday_dict[passdays]  # this day - pass effective day: last prior state to reach w/ this pass
+                if pre in day_to_idx:
+                    idx = day_to_idx[pre]+1             # if prior day in days list, idx for state is plus 1
+                elif pre <= 0:
+                    idx = 0                             # if this pass covers through the first day to travel, use f[0] as prior
+                else:                                   # Otherwise, find first index in days smaller (bisect -1) -- plus 1 for state
+                    idx = bisect.bisect_left(days,days[i-1]-passday_dict[passdays])
+                f[i] = min(f[i],f[idx]+passcost)
+        return f[-1]
+    
+```
