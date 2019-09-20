@@ -1,4 +1,22 @@
 ## DFS/backtracking
+#### 78. Subsets
+
+Given a set of distinct integers, nums, return all possible subsets (the power set).
+> For each number in list, option to add/not add.
+```python
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        self.ans = []
+        def dfs_helper(nums,i,pre):
+            if i == len(nums):
+                self.ans.append(pre)
+            else:
+                dfs_helper(nums,i+1,pre+[nums[i]])
+                dfs_helper(nums,i+1,pre)
+        dfs_helper(sorted(nums),0,[])
+        return self.ans
+```
+
 ### Combination sums
 #### 39. Combination Sum
 
