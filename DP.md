@@ -1,5 +1,7 @@
 ## DP 例题
 
+### Grid
+
 #### 64. Minimum Path Sum
 
 Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
@@ -59,6 +61,37 @@ class Solution:
                     f[i][j] += f[i][j-1]
         return f[-1][-1]
 ```
+#### 221. Maximal Square
+
+Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
+
+```python
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        # f[i][j]: size of square formed from left and up ending at [i][j] - size*size = area
+        # initials:
+        # f[0][0] = 1 if matrix[0][0] = '1'
+        # i == 0 or j == 0: f max at 1
+        # transitional: [i][j]能构成square的条件是(自身，左，上，斜上)都是‘1’，且取其各自能构成square中最小的。 且边长+1. -> 画图论证
+        # 因为不构成square的f是0，自身为‘1’就构成边长是1的square，可直接取最小。
+        # f[i][j] = min(左，上，斜上) + 1
+        if not matrix or not matrix[0]:
+            return 0
+        f = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+        f[0][0] = 1 if matrix[0][0] == '1' else 0
+        maxsize = 0
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if i == 0 or j == 0:
+                    f[i][j] = 1 if matrix[i][j] == '1' else 0
+                elif matrix[i][j] == '1':
+                    f[i][j] = min(f[i-1][j-1],f[i-1][j],f[i][j-1]) + 1
+                else:
+                    f[i][j] = 0
+                maxsize = max(maxsize,f[i][j])
+        return maxsize*maxsize
+```
+### 不知道类型
 
 #### 91. Decode Ways
 
