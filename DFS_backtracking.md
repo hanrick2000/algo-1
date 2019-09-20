@@ -16,7 +16,23 @@ class Solution:
         dfs_helper(sorted(nums),0,[])
         return self.ans
 ```
+#### 90. Subsets II
 
+Given a collection of integers that might contain duplicates, nums, return all possible subsets (the power set).
+> ? deal w/ dups
+```
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        ans = []
+        def dfs(nums,i,pre,ans):
+            ans.append(pre)
+            for x in range(i,len(nums)):
+                if x > i and nums[x] == nums[x-1]:
+                    continue
+                dfs(nums,x+1,pre+[nums[x]],ans)
+        dfs(sorted(nums),0,[],ans)
+        return ans
+```
 ### Combination sums
 #### 39. Combination Sum
 
