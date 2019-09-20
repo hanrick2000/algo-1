@@ -139,3 +139,28 @@ class Solution(object):
         dfs()
         return out
 ```
+### Parentheses
+#### 22. Generate Parentheses
+
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+> Similar to combination sum, now the target is to use up all left( + right ).
+> Count left and right separately
+> throw away all invalid combinations by `right<left` -> have used more right than left parentheses
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        if n <= 0:
+            return []
+        self.ans = []
+        def dfs_helper(left,right,pre):
+            if right<left: ## important: trim all invalid results
+                return []
+            if left == 0 and right == 0:
+                self.ans.append(pre)
+            if left:
+                dfs_helper(left-1,right,pre+'(')
+            if right:
+                dfs_helper(left,right-1,pre+')')
+        dfs_helper(n,n,"")
+        return self.ans
+```
