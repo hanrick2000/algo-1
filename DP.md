@@ -191,3 +191,25 @@ class Solution:
         return f[-1]
     
 ```
+
+### Search 类型？
+
+#### 120. Triangle
+
+Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
+
+> 如果顺序想，第i行最优不一定来源于i-1行最优。Bottom up/从目的地出发: 最后一行的minpath是确定的，此后第k行开始的minpath必是其children的minpath之一
+```python
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        # bottom up, on row k: state dp[i] rep minpath from end to k+1 row on each idx
+        # initial dp[i] = triangle[-1][i]
+        # transi: for row k, choose min from 2 children in k+1:
+        # dp[i] = min(dp[i],dp[i+1])+triangle[k][i]
+        
+        dp = [triangle[-1][i] for i in range(len(triangle[-1]))]
+        for k in range(len(triangle)-2,-1,-1):
+            for i in range(len(triangle[k])):
+                dp[i] = min(dp[i],dp[i+1]) + triangle[k][i]
+        return dp[0]
+```
