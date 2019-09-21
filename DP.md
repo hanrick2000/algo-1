@@ -92,6 +92,39 @@ class Solution:
         return maxsize*maxsize
 ```
 ### Interval 区间型
+#### 312. Burst Balloons
+
+Given n balloons, indexed from 0 to n-1. Each balloon is painted with a number on it represented by array nums. You are asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] * nums[right] coins. Here left and right are adjacent indices of i. After the burst, the left and right then becomes adjacent.
+
+Find the maximum coins you can collect by bursting the balloons wisely.
+> 重构问题，倒着想： 最后一个气球k戳破时，左边i-k，右边k-j是两个子问题
+
+> 区间型DP，注意loop顺序： 区间长度增长方向。 格外注意loop边界
+
+> t: O(n^3),sp O(n^2)
+
+> time complexity: O(状态数*每个计算时间)
+```python
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+        # state: f[i][j]: max coins to collect for balloons b/t i to j, exclusive
+        # initial: f[i][i+1] = 0, no balloons to burst
+        # trans: for k in (i,j), f[i][j] = max(f[i][k] + nums[i]*nums[k]*nums[j] + f[k][j])
+        # order: len of (i-j) increase
+        
+        # add ones to both sides.
+        a = [1] + nums + [1]
+        f = [[0 for _ in range(len(a))] for _ in range(len(a))]
+        for l in range(1,len(a)):
+            for i in range(len(a)-l):
+                j = i + l
+                if j - i == 1:
+                    continue             # 相邻边界，state已在init时设为0
+                for k in range(i+1,j):
+                    f[i][j] = max(f[i][j],f[i][k] + a[i]*a[k]*a[j] + f[k][j])
+        return f[0][-1]
+```
+
 #### 486. Predict the Winner (两头取石子题)
 
 Given an array of scores that are non-negative integers. Player 1 picks one of the numbers from either end of the array followed by the player 2 and then player 1 and so on. Each time a player picks a number, that number will not be available for the next player. This continues until all the scores have been chosen. The player with the maximum score wins.
