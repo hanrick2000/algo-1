@@ -191,6 +191,36 @@ class Solution:
         return f[-1]
     
 ```
+#### 264. Ugly Number II (用pointer辅助transition func）
+
+Write a program to find the n-th ugly number.
+
+Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. 
+```python
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        # state: u[i] i+1-th ugly number
+        # initial state: u[0] = 0
+        # next u[i] must be some u[x] * 2,3 or 5
+        # key point is what's this x?
+        # use 3 pointers to track x. x start from 0 - the smallest
+        # each u[x] can be used 3 times - w/ 2,3 or 5. after that, it's another u[y]
+        # trasitional: u[i] = min(u[p1]*2,u[p2]*3,u[p3]*5)
+        
+        u = [0 for _ in range(n)]
+        u[0] = 1
+        p2,p3,p5 = 0,0,0
+        for i in range(1,n):
+            n2,n3,n5 = u[p2]*2, u[p3]*3, u[p5]*5
+            u[i] = min(n2,n3,n5)
+            if n2 == u[i]:
+                p2+=1
+            if n3 == u[i]:
+                p3+=1
+            if n5 == u[i]:
+                p5+=1
+        return u[-1]
+```
 
 ### Search 类型？
 
