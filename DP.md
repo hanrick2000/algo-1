@@ -91,6 +91,40 @@ class Solution:
                 maxsize = max(maxsize,f[i][j])
         return maxsize*maxsize
 ```
+### Interval 区间型
+#### 486. Predict the Winner (两头取石子题)
+
+Given an array of scores that are non-negative integers. Player 1 picks one of the numbers from either end of the array followed by the player 2 and then player 1 and so on. Each time a player picks a number, that number will not be available for the next player. This continues until all the scores have been chosen. The player with the maximum score wins.
+
+Given an array of scores, predict whether player 1 is the winner. You can assume each player plays to maximize his score.
+> 两头取 -- final state不唯一。变换思考角度， 区间
+> 区间型iter顺序： 区间大小从小到大
+```python
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        # state: Sx is from this point forward, sum_p1 - sum_p2
+        # f[i][j]: Sx facing nums[i...j] inclusive
+        # cal from small len to large. j-i
+        # initial f[i][i] = nums[i]
+        # transitional: 
+        # f[i][j] = max(nums[i]-f[i+1][j],nums[j]-f[i][j-1])
+        # final state >= 0 win
+        
+        # get state array nxn
+        n = len(nums)
+        f = [[None for _ in range(n)] for _ in range(n)]
+        # initial states, l == 0:
+        for i in range(n):
+            f[i][i] = nums[i]
+        for l in range(1,n):
+        # len from 1- n, len == 0 already proccessed in init state above
+        # len == 石子数 - 1
+            for i in range(n-l):
+                j = l + i
+                f[i][j] = max(nums[i] - f[i+1][j], nums[j] - f[i][j-1])
+        return f[0][-1]>=0
+```
+
 ### 不知道类型
 
 #### 91. Decode Ways
