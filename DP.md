@@ -196,6 +196,8 @@ class Solution:
                     f[i][j] = 1+ min(f[i-1][j],f[i][j-1],f[i-1][j-1])
         return f[-1][-1]
 ```
+#### similar variation. 1035. Uncrossed Lines
+> 将数组看作字符串，连接则为A或B中进行删除操作。求最多matching。 转移方程的区别是相等时+1。
 
 ### 不知道类型
 
