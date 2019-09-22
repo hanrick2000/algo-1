@@ -196,9 +196,38 @@ class Solution:
                     f[i][j] = 1+ min(f[i-1][j],f[i][j-1],f[i-1][j-1])
         return f[-1][-1]
 ```
-#### similar variation. 1035. Uncrossed Lines
+#### similar variations. 1035. Uncrossed Lines
 > 将数组看作字符串，连接则为A或B中进行删除操作。求最多matching。 转移方程的区别是相等时+1。
+#### similar variations. 583. Delete Operation for Two Strings
 
+### 背包类型
+#### lintcode: 92. Backpack （基础款背包，无value）
+Given n items with size Ai, an integer m denotes the size of a backpack. How full you can fill this backpack?
+```python
+class Solution:
+    def backPack(self, m: int, A: List[int]) -> int:
+        # f[i][m] True if 0-i-th (A[i-1]) item can combine to weight m
+        # max size is x of last f[-1][x] == True (求的是最大size x<=m。一定在最后一排，即有所以item参与，但不一定在最后一列)
+        # initials:
+        # f[0][w] = False
+        # f[i][0] = True: any item to make up 0 weight is possible
+        # tansitional: include/not include last item
+        # f[i][j] = f[i-1][j] or f[i-1][j-A[i-1]] if j-A[i-1]>=0 (等于0很重要，这样才能联系到初始条件)
+        
+        f = [[None for _ in range(m+1)] for _ in range(len(A)+1)]
+        for i in range(len(A)+1):
+            f[i][0] = True                      # initial 1
+            for j in range(1,m+1):
+                if i == 0 and j > 0:
+                    f[i][j] = False             # initial 2
+                    continue
+                f[i][j] = f[i-1][j]             # one option
+                if not f[i-1][j] and j>=A[i-1]: # if option 1 is false, look at possibility of option 2
+                    f[i][j] = f[i-1][j-A[i-1]]
+        for j in range(m,-1,-1):                # reverse loop, get the max index
+            if f[-1][j]:
+                return j
+```
 ### 不知道类型
 
 #### 91. Decode Ways
