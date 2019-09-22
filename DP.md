@@ -157,6 +157,45 @@ class Solution:
                 f[i][j] = max(nums[i] - f[i+1][j], nums[j] - f[i][j-1])
         return f[0][-1]>=0
 ```
+### 双序列型
+#### 72. Edit Distance
+Given two words word1 and word2, find the minimum number of operations required to convert word1 to word2.
+
+You have the following 3 operations permitted on a word:
+
+Insert a character
+Delete a character
+Replace a character
+> 双序列： 涉及比较or操作两个序列 -- mxn的状态数组。可优化 -- 如只与i-1，j-1相关。
+
+> 从结尾开始思考： 本题对最后一位进行判断，从而分出子问题。if match，如何，else，三种操作对应比较的字符串状态。
+
+> 需要注意：开多大state array，初始状态怎么定义。 具体来说，状态0 对应空串，这方便定义初始状态。同时对f[i][j]比较的是word1[i-1]和word2[j-1]
+```python
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        # state f[i][j] w1 to i-1-th, and w2 to j-1-th min edit distance
+        # i or j == 0 means empty str from that word
+        # initial states f[0][j] = j, f[i][0] = i
+        # f[i][j] = if w1[i-1] == w2[j-1], f[i-1][j-1]
+        #           else, 1+ min(f[i-1][j],f[i][j-1],f[i-1][j-1])
+        
+        m,n = len(word1),len(word2)
+        f = [[None for _ in range(n+1)] for _ in range(m+1)]
+        
+        for i in range(m+1):
+            for j in range(n+1):
+                if i == 0:
+                    f[i][j] = j
+                elif j == 0:
+                    f[i][j] = i
+                else:
+                    if word1[i-1] == word2[j-1]:
+                        f[i][j] = f[i-1][j-1]
+                        continue
+                    f[i][j] = 1+ min(f[i-1][j],f[i][j-1],f[i-1][j-1])
+        return f[-1][-1]
+```
 
 ### 不知道类型
 
