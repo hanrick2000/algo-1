@@ -7,15 +7,15 @@ class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         # f[i] len of longest ending at nums[i]
         # last num[i] is part or not part
-        # f[i] = max(f[j]+1|nums[i]>nums[j] or f[j]|nums[i]<=nums[j])
+        # f[i] = max(f[j]+1|nums[i]>nums[j]) else, 1
         # initial f[0] = 1
+        if not nums:
+            return 0
         f = [1 for _ in range(len(nums))]
         for i in range(len(nums)):
             for j in range(i):
                 if nums[i]>nums[j]:
                     f[i] = max(f[i],f[j]+1)
-                else:
-                    f[i] = max(f[i],f[j])
         return max(f)
 ```
 ### Grid
