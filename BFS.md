@@ -33,4 +33,4 @@
 #### 210 Course Schedule II
 #### 269 Alien Dictionary
 #### 444 Sequence Reconstruction
-
+> 翻译： 是否存在唯一topo order，且与target相同
