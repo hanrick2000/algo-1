@@ -20,6 +20,23 @@ class Solution:
             q *= nums[i]
         return res
 ```
+
+#### 652 find duplicate subtree 
+
+> somehow serialize tree to compare. 直接比较两颗subtree的问题，1-慢，2-难以解决重复对问题
+```python
+class Solution:
+    def findDuplicateSubtrees(self, root):
+        def tuplify(root):
+            if root:
+                tuple = root.val, tuplify(root.left), tuplify(root.right)
+                trees[tuple].append(root)
+                return tuple
+        trees = collections.defaultdict(list)
+        tuplify(root)
+        # print(trees)
+        return [roots[0] for roots in trees.values() if len(roots)>1]
+```
 #### 331. Verify Preorder Serialization of a Binary Tree
 
 One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node's value. If it is a null node, we record using a sentinel value such as #.
