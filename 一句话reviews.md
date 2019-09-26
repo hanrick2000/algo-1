@@ -10,3 +10,8 @@
 #### 128. Longest Consecutive Sequence
 > union find - connect临接的数，问题转成问maxsize of union
 另，可用set()转化--O(n)，再loop
+
+### BFS
+#### 310. Minimum Height Trees
+> leaves: one degree -- only one neighbors
+> BFS while remaining == 2: 由边缘到中心。最后剩1-2个可作root
