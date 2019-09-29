@@ -15,3 +15,8 @@
 #### 310. Minimum Height Trees
 > leaves: one degree -- only one neighbors
 > BFS while remaining == 2: 由边缘到中心。最后剩1-2个可作root
+
+### Stack
+#### 503. Next Greater Element II
+> 用stack暂存，遇到next great，pop一串儿
+> 解决cycle问题： loop 两次！！
