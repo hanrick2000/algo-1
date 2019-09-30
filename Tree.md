@@ -31,35 +31,34 @@ class Solution:
             return lv1+1,root
         return dfs_helper(root)[1]
 ```
+#### 1026. Maximum Difference Between Node and Ancestor
+> parameter 带pathmax，pathmin下循环。
+> 左右子树分治，取 max(maxl,maxr,abs(pathmax-root.val),abs(pathmin-root.val))
 
 ### 第二类： 二叉树结构变化
 #### Flattern Binary Tree to Linked List
 ### 第三类： BST
 > 利用性质： in-order traversal mono: non-decreasing; 左右子树的range。
-#### Kth Smallest Element in BST
-#### Binary Search Tree Iterator
-#### Closest Binary Search Tree Value
+#### 230. Kth Smallest Element in BST 
+> inorder traversal的第k个
+#### 173. Binary Search Tree Iterator (next smallest number in the BST.)
+> BST 性质。最左边的节点最小。利用stack存储一路向左路径上的root。
+> 每次pop最后一个，并将其右子树一路向左push to stack
+#### 270. Closest Binary Search Tree Value
+> recursive
+> iterative: search based BST, record path along the way. 找path上差最小的 - return min(path,key = lambda x: abs(target-x))
 #### 450. Delete Node in a BST
 > insert node? search range?
-
-### level traversal
-#### 987. Vertical Order Traversal of a Binary Tree
-> 题目要求了上层在前，同层按大小排列：level traversal, order at each level
-> 在队列中加入(node,col)，col 从0 开始，左-1右+1
-#### 117. Populating Next Right Pointers in Each Node II
-> 按层遍历，要加向右的pointer，需要每层的node先push stack，再从右至左加pointer
-
-### 其他类，遍历相关：
-### inorder traversal
 #### 285. Inorder Successor in BST
-recursive:
+> do inorder traversal, and mark and stop at next in order.
+or:
 ```python
 def inorderSuccessor(self, root, p):
     if not root: return None
-    if root.val>p.val: return self.inorderSuccessor(root.left,p) or root # 在左边或者根
-    return self.inorderSuccessor(root.right,p) # 在右边
+    if root.val>p.val: return self.inorderSuccessor(root.left,p) or root 
+    return self.inorderSuccessor(root.right,p)
 ```
-iterative: stack
+iterative: stack, inorder traversal
 ```python
 class Solution:
     def inorderSuccessor(self, root: 'TreeNode', p: 'TreeNode') -> 'TreeNode':
@@ -80,4 +79,14 @@ class Solution:
                     stack.append(node)
                     node = node.left
 ```
+
+### 其他类，遍历相关：
+### level traversal
+#### 987. Vertical Order Traversal of a Binary Tree
+> 题目要求了上层在前，同层按大小排列：level traversal, order at each level
+> 在队列中加入(node,col)，col 从0 开始，左-1右+1
+#### 117. Populating Next Right Pointers in Each Node II
+> 按层遍历，要加向右的pointer，需要每层的node先push stack，再从右至左加pointer
+
+### inorder traversal
 #### 450. Delete Node in a BST
