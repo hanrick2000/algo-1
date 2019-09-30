@@ -34,7 +34,24 @@ class Solution:
 #### 1026. Maximum Difference Between Node and Ancestor
 > parameter 带pathmax，pathmin下循环。
 > 左右子树分治，取 max(maxl,maxr,abs(pathmax-root.val),abs(pathmin-root.val))
-
+#### 979. Distribute Coins in Binary Tree
+> 本质还是divide&conquer。难点在如何抽象coin的移动
+```python
+def distributeCoins(self, root: TreeNode) -> int:
+    self.moves = 0
+    def dfs_helper(root):
+        if not root:
+            return 0
+        left_to_parent  = dfs_helper(root.left)
+        right_to_parent = dfs_helper(root.right)
+        # 记录移动数，上下均为一次移动。注意这里不论方向，都只在父节点记录一次，不存在重复
+        self.moves += abs(left_to_parent) + abs(right_to_parent)
+        # 向parent移动的coin数，即结余coin数， 负数是反方向
+        # 本节点coin + 左右子树挪过来的 - 1（本节点要保留的一个）
+        return root.val + left_to_parent + right_to_parent - 1
+    dfs_helper(root)
+    return self.moves
+```
 ### 第二类： 二叉树结构变化
 #### Flattern Binary Tree to Linked List
 ### 第三类： BST
