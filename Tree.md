@@ -87,6 +87,24 @@ class Solution:
 > 在队列中加入(node,col)，col 从0 开始，左-1右+1
 #### 117. Populating Next Right Pointers in Each Node II
 > 按层遍历，要加向右的pointer，需要每层的node先push stack，再从右至左加pointer
+#### * 96. Unique Binary Search Trees (DP)
+Given n, how many structurally unique BST's (binary search trees) that store values 1 ... n?
+> 子问题思路： 以每个数分别为root，则左右子树为子问题
+```python
+def numTrees(self, n: int) -> int:
+    # dp[i] record # of unique bsts w/ val 1...i
+    # initials: dp[0] = 1 (no tree), dp[1] = 1 (one tree)
+    # trans: dp[i] =sum( dp[j-1]*dp[i-j] |j as root) for all js
+    # when j is root, 1-(j-1) form left bst, and (j+1) -- i form right bst.
+    # for # of bst, (j+1) -- i is same as 1--(j-i) 每个元素减j
+
+    dp = [0 for _ in range(n+1)]
+    dp[0] = dp[1] = 1
+    for i in range(2,n+1):
+        for j in range(1,i+1):
+            dp[i] += dp[j-1]*dp[i-j]
+    return dp[-1]
+```
 
 ### inorder traversal
 #### 450. Delete Node in a BST
