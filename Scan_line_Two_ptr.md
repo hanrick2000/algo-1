@@ -1,3 +1,10 @@
+### A. two pointers
+> 类型1: loop through array，问题有单调性。一端逐一向前，另一端有条件跟上
+#### 209. Minimum Size Subarray Sum
+> 数组是非负，则和单调增。寻找最小最大的subarray和可以用two pointer
+> end逐一向前，当subarray sum>target，用while将start跟上缩小区间，更新min len。
+
+### B. 扫描线
 #### 253. Meeting Rooms II
 Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
 
