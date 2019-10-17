@@ -1,4 +1,13 @@
 ## DFS/backtracking
+
+#### 51. N-Queens
+想清楚在dfs里面和外面进行的部分和dfs的parameter
+> 因为queens的特点，可固定一个loop： 一直queens不能在同一行共存，逐行摆放 - 第i个摆在第i-1行 （用列也一样，行可以在程序上省些事）
+> - use hashmap to remember 不能再放的row, col, row+col, row-col
+> - dfs parameter: k queens to find(putting in ith row), pre processed rows layout
+> - dfs 里， 终止条件： k == 0: append to result and return
+> - dfs里，寻找下一个，已知row id == n-k，loop col to find valid pos, then dfs on: dfsHelper(k-1, pre + [this], res). remember to backtrack hashmap locations after.
+
 #### 78. Subsets
 
 Given a set of distinct integers, nums, return all possible subsets (the power set).
