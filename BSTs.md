@@ -262,7 +262,7 @@ In an exam room, there are N seats in a single row, numbered 0, 1, 2, ..., N-1.
 
 When a student enters the room, they must sit in the seat that maximizes the distance to the closest person.  If there are multiple such seats, they sit in the seat with the lowest number.  (Also, if no one is in the room, then the student sits at seat number 0.)
 
-使用bisect插入 `bisect.insort(self.occupied_seats,idx)`
+使用bisect插入 `bisect.insert(self.occupied_seats,idx)`
 简单直白loop相邻两座位，更新距离。
 
 注意用法： 
