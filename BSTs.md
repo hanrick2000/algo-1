@@ -254,6 +254,36 @@ class MyCalendar:
             return True
         return False
 ```
+#### 932. My Calendar III
+插入无限个event， 查询当前时间段book次数
+> 区间多次查询，用segment tree
+题解示例：time complexity is O(log(n)) - 树的高度 
+```python
+
+class MyCalendarThree(object):
+'''
+Share a short python segment tree implementation. Lazy propagation is implemented to achieve O(1) time complexity.
+The usage of ID is similar to the index of array element in a heap -- 2ID and 2ID+1 are the indices of the two kids.
+ex. 1 is the root, 2, 3 are the left and right kids of root, so on so forth.
+'''
+    def __init__(self):
+        self.seg = collections.defaultdict(int)
+        self.lazy = collections.defaultdict(int)
+        
+    def book(self, start, end):
+        def update(s, e, l = 0, r = 10**9, ID = 1):
+            if r <= s or e <= l: return 
+            if s <= l < r <= e:
+                self.seg[ID] += 1
+                self.lazy[ID] += 1
+            else:
+                m = (l + r) // 2
+                update(s, e, l, m, 2 * ID)
+                update(s, e, m, r, 2*ID+1)
+                self.seg[ID] = self.lazy[ID] + max(self.seg[2*ID], self.seg[2*ID+1])
+        update(start, end)
+        return self.seg[1] + self.lazy[1]
+```
 
 #### 另
 #### 855. Exam Room
