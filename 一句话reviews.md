@@ -20,3 +20,8 @@
 #### 503. Next Greater Element II
 > 用stack暂存，遇到next great，pop一串儿
 > 解决cycle问题： loop 两次！！
+
+### Islands
+#### 463. Island Perimeter
+> 数岛数和被merge的边数
+> OR 2 loop，row & col，数pair不相等的。注意前后padding
