@@ -5,6 +5,22 @@
 > end逐一向前，当subarray sum>target，用while将start跟上缩小区间，更新min len。
 
 ### B. 扫描线
+#### 56. Merge Intervals
+扫过排序的intervals，interval.start 与 prev.end比较，决定续还是加。
+```python 
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        if not intervals:
+            return []
+        intervals.sort()
+        res = [intervals[0]]
+        for i in range(1,len(intervals)):
+            if intervals[i][0] <= res[-1][1]:
+                res[-1][1] = max(res[-1][1], intervals[i][1])
+            else:
+                res.append(intervals[i])
+        return res
+```
 #### 253. Meeting Rooms II
 Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei), find the minimum number of conference rooms required.
 
