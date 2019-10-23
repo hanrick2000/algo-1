@@ -92,3 +92,20 @@ Return the intersection of these two interval lists.
 
 延续扫描线思路， 先拆分区间，排列（依题意按start time升序，开始优先于结束 -- closed intervals）
 loop over and count， 每当count 1->2, add intersect start; count 2->1, and intersect end.
+
+OR, 不拆分intervals: 2个pointers
+> 看到 有交集的interval满足a.start<= b.end and a.end>= b.start. 再以尾巴的位置决定下一个比较位置
+```python
+class Solution:
+    def intervalIntersection(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+        res = []
+        i = j = 0
+        while i < len(A) and j < len(B):
+            if A[i][0] <= B[j][1] and A[i][1] >= B[j][0]:
+                res.append([max(A[i][0],B[j][0]), min(A[i][1],B[j][1])])
+            if A[i][1] < B[j][1]:
+                i += 1
+            else:
+                j += 1
+        return res
+```
